@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/01 17:41:04 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/07 19:44:47 by nriviere         ###   ########.fr       */
+/*   Created: 2022/12/07 19:26:00 by nriviere          #+#    #+#             */
+/*   Updated: 2022/12/07 19:44:41 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUSH
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -44,4 +44,4 @@ char	*get_next_line(int fd);
 void	*ft_calloc(size_t nmemb, size_t n);
 t_list	*ft_lstadd_back(t_list **lst, char *str);
 
-#endif // GET_NEXT_LINE_H
+#endif // GET_NEXT_LINE_BONUS_H

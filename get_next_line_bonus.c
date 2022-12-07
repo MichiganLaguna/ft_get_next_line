@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 12:14:46 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/07 19:50:01 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/07 19:41:12 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_findendl(char *str)
 {
@@ -111,7 +111,5 @@ char	*get_next_line(int fd)
 	}
 	out = ft_big_join(&fd_list[fd]);
 	free(buffer);
-	if (cread == 0)
-		return (0);
 	return (out);
 }

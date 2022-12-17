@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:02 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/17 12:15:16 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/17 15:05:04 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_strcat(char *str, char *str1)
 	i = 0;
 	i2 = 0;
 	if (!str || !str1)
-		return (0);
+		return ;
 	while (str[i])
 		i++;
 	while (str1[i2])
@@ -39,7 +39,7 @@ int	ft_check_endl(char *str)
 
 	i = 0;
 	if (!str)
-		return (-2);
+		return (-1);
 	while (str[i])
 	{
 		if (str[i] == '\n')
@@ -49,15 +49,6 @@ int	ft_check_endl(char *str)
 	return (-1);
 }
 
-char	*ft_error(char *str, char *fd)
-{
-	if (str)
-		free(str);
-	if (fd)
-		free(fd);
-	return (0);
-}
-
 char	*get_next_line(int fd)
 {
 	static char	*fd_lines[MAXFD];
@@ -65,6 +56,7 @@ char	*get_next_line(int fd)
 	int			bread;
 	int			mbytes;
 	int			fbytes;
+	int			end;
 
 	if (fd < 0 || fd > MAXFD)
 		return (0);
@@ -72,21 +64,63 @@ char	*get_next_line(int fd)
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (buffer);
-	fd_lines[fd] = malloc(sizeof(char) * 1);
-	if (!fd_lines[fd])
-		return (ft_error(buffer, fd_lines[fd]));
 	fbytes = 0;
 	mbytes = 1;
-	while (bread && !(ft_check_endl(fd_lines[MAXFD])))
+	end = (ft_check_endl(fd_lines[fd]));
+	while (bread && end == -1)
 	{
 		bread = read(fd, buffer, BUFFER_SIZE);
 		if (bread == -1)
-			return (ft_error(fd_lines, buffer));
+			return (free(fd_lines[fd]), free(buffer), (char *)0);
+		if (bread == 0)
+			return (free(buffer), ft_strncut(&(fd_lines[fd]),
+					ft_check_endl(fd_lines[fd]) + 1));
 		if (fbytes < bread)
 		{
-			mbytes *= 2;
-			fbytes += mbytes / 2;
-			fd_lines[fd] = ft_realloc(fd_lines[fd], mbytes);
+			while (fbytes < bread)
+			{
+				mbytes *= 2;
+				fbytes += mbytes / 2;
+			}
+			fd_lines[fd] = ft_realloc(&fd_lines[fd], mbytes);
 		}
+		ft_strcat(fd_lines[fd], buffer);
+		end = ft_check_endl(fd_lines[fd]);
+		fbytes -= bread;
 	}
+	printf("$%s$", fd_lines[fd]);
+	free(buffer);
+	return (ft_strncut(&(fd_lines[fd]), ft_check_endl(fd_lines[fd]) + 1));
+}
+
+int	main(void)
+{
+	int		fd;
+	char	*out;
+	char	*str;
+
+	fd = open("15.yxt", O_RDONLY);
+	out = get_next_line(fd);
+	printf(":%s:", out);
+	free(out);
+	out = get_next_line(fd);
+	printf(":%s:", out);
+	free(out);
+	out = get_next_line(fd);
+	printf(":%s:", out);
+	free(out);
+	out = get_next_line(fd);
+	printf(":%s:", out);
+	free(out);
+	// out = get_next_line(fd);
+	// free(out);
+	// out = malloc(10);
+	// out[0] = 0;
+	// printf(":%s:", out);
+	// str = ft_strdup("Hello", 5);
+	// printf(":%s:", str);
+	// ft_strcat(out, str);
+	// printf(":%s:", out);
+
+	return (0);
 }

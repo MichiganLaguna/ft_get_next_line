@@ -6,12 +6,11 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:28 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/17 12:14:54 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/17 14:57:44 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 // Returns the length of str.
 int	ft_strlen(char *str)
@@ -84,10 +83,10 @@ void	*ft_realloc(char **str, size_t size)
 	char	*out;
 	int		ln;
 
-	if (!str || !(*str))
+	if (!str)
 		return (0);
 	ln = ft_strlen(*str);
-	if (ln < size)
+	if (ln > size)
 		return (0);
 	out = malloc(sizeof(char) * (size + 1));
 	if (!out)

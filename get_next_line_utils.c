@@ -5,62 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/01 17:43:10 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/07 19:29:20 by nriviere         ###   ########.fr       */
+/*   Created: 2022/12/17 10:52:28 by nriviere          #+#    #+#             */
+/*   Updated: 2022/12/17 12:14:54 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t nmemb, size_t n)
-{
-	void	*ptr;
-	size_t	i;
-	size_t	c;
 
-	c = nmemb * n;
-	if (!c)
-		return (malloc(0));
-	if (c / n != nmemb)
-		return (0);
-	ptr = malloc(c);
-	i = 0;
-	if (ptr)
-	{
-		while (i < c)
-		{
-			((unsigned char *)ptr)[i] = 0;
-			i++;
-		}
-	}
-	return (ptr);
-}
-
-t_list	*ft_lstadd_back(t_list **lst, char *content)
-{
-	t_list	*new;
-	int		i;
-
-	new = ft_calloc(1, sizeof(t_list));
-	new->next = 0;
-	new->content = ft_calloc(1, ft_strlen(content) + 1);
-	i = 0;
-	while (content[i])
-	{
-		(new->content)[i] = content[i];
-		i++;
-	}
-	if (*lst)
-	{
-		while ((*lst)->next)
-			lst = &(*lst)->next;
-		(*lst)->next = new;
-	}
-	else
-		(*lst) = new;
-	return (new);
-}
-
+// Returns the length of str.
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -73,45 +26,74 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_big_strlen(t_list *lst)
+// Returns an exact malloc'ed copy of up to ln characters from str.
+char	*ft_strdup(char *str, int ln)
 {
-	int	i;
-	int	size;
+	int		i;
+	char	*out;
 
+	if (!str)
+		return (0);
 	i = 0;
-	size = 0;
-	while (lst)
+	out = malloc(sizeof(char) * (ln + 1));
+	if (!out)
+		return (out);
+	while (str[i] && i < ln)
 	{
-		i = 0;
-		while (((char *)lst->content)[i])
-		{
-			if (((char *)lst->content)[i] == '\n')
-				return (size + i + 1);
-			i++;
-		}
-		size += i;
-		lst = lst->next;
+		out[i] = str[i];
+		i++;
 	}
-	return (size);
+	out[i] = 0;
+	return (out);
 }
 
-void	ft_strcat(char **s1, char *s2, int end)
+// Cut str in two, returning the first part as a new malloc'ed string
+// and leaving the rest in str.
+char	*ft_strncut(char **str, int ln)
 {
-	int	i;
-	int	i2;
+	int		i;
+	int		len;
+	char	*out;
+	char	*tmp;
 
+	if (!str || !(*str))
+		return (0);
 	i = 0;
-	i2 = 0;
-	if (!s2)
-		return ;
-	if (end == -1)
-		end = ft_strlen(s2);
-	while ((*s1)[i2])
-		i2++;
-	while (i <= end)
+	len = ft_strlen(*str);
+	if (ln > len)
+		ln = len;
+	out = ft_strdup(*str, ln);
+	if (!out)
+		return (out);
+	tmp = ft_strdup((*str) + ln, len - ln);
+	if (!tmp)
 	{
-		(*s1)[i2] = (s2)[i];
-		i++;
-		i2++;
+		free(out);
+		return (tmp);
 	}
+	free((*str));
+	*str = tmp;
+	return (out);
+}
+
+// Re-Allocate the previously allocated string in str,
+// making the new string size bytes long,
+// freeing str and returning the newly created string
+void	*ft_realloc(char **str, size_t size)
+{
+	char	*out;
+	int		ln;
+
+	if (!str || !(*str))
+		return (0);
+	ln = ft_strlen(*str);
+	if (ln < size)
+		return (0);
+	out = malloc(sizeof(char) * (size + 1));
+	if (!out)
+		return (out);
+	out[0] = 0;
+	ft_strcat(out, *str);
+	free((*str));
+	return (out);
 }

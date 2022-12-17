@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/01 17:41:04 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/07 19:44:47 by nriviere         ###   ########.fr       */
+/*   Created: 2022/12/17 10:52:13 by nriviere          #+#    #+#             */
+/*   Updated: 2022/12/17 12:13:42 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 # if BUFFER_SIZE < 0
 #  undef BUFFER_SIZE
-#  define BUFFER_SIZE 0
+#  define BUFFER_SIZE 42
 # endif
 
 # ifdef MAXFD
@@ -30,18 +30,14 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
-typedef struct s_list
-{
-	char			*content;
-	struct s_list	*next;
-}	t_list;
-
-int		ft_strlen(char *s);
-int		ft_big_strlen(t_list *lst);
-void	ft_strcat(char **s1, char *s2, int end);
-char	*get_next_line(int fd);
-void	*ft_calloc(size_t nmemb, size_t n);
-t_list	*ft_lstadd_back(t_list **lst, char *str);
+int		ft_strlen(char *str);
+char	*ft_strdup(char *str, int ln);
+char	*ft_strncut(char **str, int ln);
+void	*ft_realloc(char **str, size_t size);
+void	ft_strcat(char *str, char *str1);
 
 #endif // GET_NEXT_LINE_H

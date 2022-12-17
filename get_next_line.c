@@ -5,113 +5,88 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 12:14:46 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/07 19:50:01 by nriviere         ###   ########.fr       */
+/*   Created: 2022/12/17 10:52:02 by nriviere          #+#    #+#             */
+/*   Updated: 2022/12/17 12:15:16 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_findendl(char *str)
+// Concatene the null-terminated string str1,
+// at the end of the null-terminated string str.
+void	ft_strcat(char *str, char *str1)
+{
+	int	i;
+	int	i2;
+
+	i = 0;
+	i2 = 0;
+	if (!str || !str1)
+		return (0);
+	while (str[i])
+		i++;
+	while (str1[i2])
+	{
+		str[i + i2] = str1[i2];
+		i2++;
+	}
+	str[i + i2] = 0;
+}
+
+int	ft_check_endl(char *str)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	if (!str)
-		return (-1);
-	while (str[++i])
+		return (-2);
+	while (str[i])
+	{
 		if (str[i] == '\n')
 			return (i);
+		i++;
+	}
 	return (-1);
 }
 
-void	ft_cutstart(char **str)
+char	*ft_error(char *str, char *fd)
 {
-	char	*tmp;
-	int		new_size;
-	int		i;
-	int		i2;
-
-	i = ft_findendl(*str);
-	if (i < 0)
-		i = 0;
-	i2 = 0;
-	new_size = ft_strlen(*str) - i;
-	tmp = ft_calloc(1, new_size);
-	if (!tmp)
-		return ;
-	while ((*str)[i++])
-		tmp[i2++] = (*str)[i];
-	free(*str);
-	*str = tmp;
-	return ;
-}
-
-char	*ft_big_join(t_list **lst)
-{
-	t_list	*tmp;
-	char	*out;
-	int		endl;
-
-	out = ft_calloc(1, ft_big_strlen(*lst) + 1);
-	if (!out)
-		return (out);
-	while (*lst)
-	{
-		endl = ft_findendl((*lst)->content);
-		tmp = (*lst)->next;
-		ft_strcat(&out, (*lst)->content, endl);
-		if (endl > -1)
-		{
-			ft_cutstart(&(*lst)->content);
-			if (!(*lst)->content)
-				return ((char *)0);
-			break ;
-		}
-		free((*lst)->content);
-		free(*lst);
-		(*lst) = tmp;
-	}
-	return (out);
-}
-
-void	ft_lstfree(t_list **list)
-{
-	t_list	*tmp;
-
-	while (*list)
-	{
-		tmp = (*list)->next;
-		free((*list)->content);
-		free(*list);
-		*list = tmp;
-	}
+	if (str)
+		free(str);
+	if (fd)
+		free(fd);
+	return (0);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_list	*fd_list[MAXFD];
-	char			*buffer;
-	char			*out;
-	int				cread;
+	static char	*fd_lines[MAXFD];
+	char		*buffer;
+	int			bread;
+	int			mbytes;
+	int			fbytes;
 
-	buffer = ft_calloc(1, BUFFER_SIZE + 1);
+	if (fd < 0 || fd > MAXFD)
+		return (0);
+	bread = 1;
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (buffer);
-	while (ft_findendl(buffer) == -1)
+	fd_lines[fd] = malloc(sizeof(char) * 1);
+	if (!fd_lines[fd])
+		return (ft_error(buffer, fd_lines[fd]));
+	fbytes = 0;
+	mbytes = 1;
+	while (bread && !(ft_check_endl(fd_lines[MAXFD])))
 	{
-		cread = read(fd, buffer, BUFFER_SIZE);
-		if (cread == -1)
-			return (ft_lstfree(&fd_list[fd]), free(buffer), (char *)0);
-		if (cread == 0)
-			break ;
-		buffer[cread] = 0;
-		if (!ft_lstadd_back(&fd_list[fd], buffer))
-			return (ft_lstfree(&fd_list[fd]), free(buffer), (char *)0);
+		bread = read(fd, buffer, BUFFER_SIZE);
+		if (bread == -1)
+			return (ft_error(fd_lines, buffer));
+		if (fbytes < bread)
+		{
+			mbytes *= 2;
+			fbytes += mbytes / 2;
+			fd_lines[fd] = ft_realloc(fd_lines[fd], mbytes);
+		}
 	}
-	out = ft_big_join(&fd_list[fd]);
-	free(buffer);
-	if (cread == 0)
-		return (0);
-	return (out);
 }

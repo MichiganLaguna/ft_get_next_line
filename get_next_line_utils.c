@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:28 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/17 17:25:50 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/19 19:57:18 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,21 @@ int	ft_strlen(char *str)
 char	*ft_strdup(char *str, int ln)
 {
 	int		i;
+	int		len;
 	char	*out;
 
 	if (!str)
 		return (0);
+	len = ft_strlen(str);
+	if (ln > len)
+		ln = len;
+	else if (ln < 0)
+		ln = 0;
 	i = 0;
 	out = malloc(sizeof(char) * (ln + 1));
 	if (!out)
 		return (out);
-	while (str[i] && i < ln)
+	while (i < ln)
 	{
 		out[i] = str[i];
 		i++;
@@ -50,21 +56,21 @@ char	*ft_strdup(char *str, int ln)
 // and leaving the rest in str.
 char	*ft_strncut(char **str, int ln)
 {
-	int		i;
 	int		len;
 	char	*out;
 	char	*tmp;
 
 	if (!str || !(*str))
 		return (0);
-	i = 0;
 	len = ft_strlen(*str);
 	if (ln > len)
 		ln = len;
+	else if (ln < 0)
+		ln = 0;
 	out = ft_strdup(*str, ln);
 	if (!out)
 		return (out);
-	tmp = ft_strdup((*str) + ln, len - ln);
+	tmp = ft_strdup((*str) + ln + 1, len - ln);
 	if (!tmp)
 	{
 		free(out);
@@ -81,7 +87,7 @@ char	*ft_strncut(char **str, int ln)
 void	*ft_realloc(char **str, size_t size)
 {
 	char	*out;
-	int		ln;
+	size_t	ln;
 
 	if (!str)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:28 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/19 19:57:18 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:35:38 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ char	*ft_strncut(char **str, int ln)
 		return (out);
 	tmp = ft_strdup((*str) + ln + 1, len - ln);
 	if (!tmp)
-	{
-		free(out);
-		return (tmp);
-	}
+		return (free(out), tmp);
 	free((*str));
-	*str = tmp;
+	if (tmp[0])
+		*str = tmp;
+	else
+		*str = (free(tmp), (char *)0);
 	return (out);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:02 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/19 20:00:19 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:49:28 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_strcat(char *str, char *str1)
 	str[i + i2] = 0;
 }
 
-int	ft_check_endl(char *str)
+static int	ft_check_endl(char *str)
 {
 	int	i;
 
@@ -49,28 +49,13 @@ int	ft_check_endl(char *str)
 	return (-1);
 }
 
-char	*get_next_line(int fd)
+static int	get_next_time_sub(int i[4], int fd, char *buffer, char **fd_lines)
 {
-	static char	*fd_lines[MAXFD];
-	char		*buffer;
-	int			i[4];
-
-	if (fd < 0 || fd > MAXFD)
-		return (0);
-	i[4] = ft_check_endl(fd_lines[fd]);
-	if (i[4] != -1)
-		return (ft_strncut(&(fd_lines[fd]), i[4]));
-	i[0] = 1;
-	i[1] = 0;
-	i[2] = 1;
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (free(buffer), fd_lines[fd]);
-	while (i[0] > 0 && i[4] == -1)
+	while (i[0] > 0 && i[3] == -1)
 	{
 		i[0] = read(fd, buffer, BUFFER_SIZE);
 		if (i[0] < 0)
-			return (free(buffer), (char *)0);
+			return (0);
 		buffer[i[0]] = 0;
 		if (i[0] > i[1])
 		{
@@ -82,22 +67,45 @@ char	*get_next_line(int fd)
 			fd_lines[fd] = ft_realloc(&(fd_lines[fd]), i[2]);
 		}
 		ft_strcat(fd_lines[fd], buffer);
-		i[4] = ft_check_endl(fd_lines[fd]);
+		i[3] = ft_check_endl(fd_lines[fd]);
+		if (i[0] == 0)
+			return (1);
 	}
-	free(buffer);
-	printf("$%s$", fd_lines[fd]);
-	return (ft_strncut(&(fd_lines[fd]), i[4]));
+	return (1);
 }
 
-int	main(void)
+char	*get_next_line(int fd)
 {
-	int		fd;
-	char	*out;
+	static char	*fd_lines[MAXFD];
+	char		*buffer;
+	int			i[4];
 
-	fd = open("15", O_RDONLY);
-	out = get_next_line(fd);
-	printf(":%s:", out);
-	free(out);
-	close(fd);
-	return (0);
+	if (fd < 0 || fd > MAXFD)
+		return (0);
+	i[3] = ft_check_endl(fd_lines[fd]);
+	if (i[3] != -1)
+		return (ft_strncut(&(fd_lines[fd]), i[3]));
+	i[0] = 1;
+	i[1] = 0;
+	i[2] = 1;
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (free(buffer), (char *)0);
+	if (!get_next_time_sub(i, fd, buffer, fd_lines))
+		return (free(buffer), (char *)0);
+	free(buffer);
+	return (ft_strncut(&(fd_lines[fd]), i[3]));
 }
+
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*out;
+
+// 	fd = open("15", O_RDONLY);
+// 	out = get_next_line(fd);
+// 	printf(":%s:", out);
+// 	free(out);
+// 	close(fd);
+// 	return (0);
+// }

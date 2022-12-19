@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:13 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/17 12:13:42 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:08:33 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
+
 int		ft_strlen(char *str);
 char	*ft_strdup(char *str, int ln);
 char	*ft_strncut(char **str, int ln);
 void	*ft_realloc(char **str, size_t size);
 void	ft_strcat(char *str, char *str1);
+char	*get_next_line(int fd);
 
 #endif // GET_NEXT_LINE_H

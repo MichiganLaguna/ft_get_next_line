@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:28 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/19 20:35:38 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:39:39 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ char	*ft_strncut(char **str, int ln)
 	len = ft_strlen(*str);
 	if (ln > len)
 		ln = len;
-	else if (ln < 0)
-		ln = 0;
-	out = ft_strdup(*str, ln);
+	if (ln < 0)
+		ln = len - 1;
+	out = ft_strdup(*str, ln + 1);
 	if (!out)
 		return (out);
 	tmp = ft_strdup((*str) + ln + 1, len - ln);

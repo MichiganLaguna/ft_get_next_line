@@ -7,7 +7,7 @@ OBJ		=	$(patsubst %.c, %.o, $(SRC))
 NAME	=	./gnl
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -g
+CFLAGS	=	-Wall -Wextra -Werror -g3
 all: clearscreen $(NAME)
 	$(NAME)
 

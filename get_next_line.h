@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:13 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/19 21:08:33 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/27 08:09:36 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # include <stdio.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-
 
 int		ft_strlen(char *str);
 char	*ft_strdup(char *str, int ln);

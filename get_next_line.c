@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 10:52:02 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/19 21:49:28 by nriviere         ###   ########.fr       */
+/*   Updated: 2022/12/27 08:34:10 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ static int	get_next_time_sub(int i[4], int fd, char *buffer, char **fd_lines)
 		{
 			while (i[0] > i[1])
 			{
+				i[1] += i[2];
 				i[2] *= 2;
-				i[1] += i[2] / 2;
 			}
 			fd_lines[fd] = ft_realloc(&(fd_lines[fd]), i[2]);
 		}
 		ft_strcat(fd_lines[fd], buffer);
+		i[1] -= i[0];
 		i[3] = ft_check_endl(fd_lines[fd]);
 		if (i[0] == 0)
 			return (1);
@@ -87,7 +88,7 @@ char	*get_next_line(int fd)
 		return (ft_strncut(&(fd_lines[fd]), i[3]));
 	i[0] = 1;
 	i[1] = 0;
-	i[2] = 1;
+	i[2] = BUFFER_SIZE;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (free(buffer), (char *)0);
@@ -97,15 +98,3 @@ char	*get_next_line(int fd)
 	return (ft_strncut(&(fd_lines[fd]), i[3]));
 }
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*out;
-
-// 	fd = open("15", O_RDONLY);
-// 	out = get_next_line(fd);
-// 	printf(":%s:", out);
-// 	free(out);
-// 	close(fd);
-// 	return (0);
-// }

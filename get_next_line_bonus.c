@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/17 10:52:02 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/27 08:37:42 by nriviere         ###   ########.fr       */
+/*   Created: 2022/12/27 08:35:54 by nriviere          #+#    #+#             */
+/*   Updated: 2022/12/27 08:37:48 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 // Concatene the null-terminated string str1,
 // at the end of the null-terminated string str.

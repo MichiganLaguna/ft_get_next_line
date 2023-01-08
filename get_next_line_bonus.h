@@ -6,7 +6,7 @@
 /*   By: nriviere <nriviere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:36:11 by nriviere          #+#    #+#             */
-/*   Updated: 2022/12/27 08:37:10 by nriviere         ###   ########.fr       */
+/*   Updated: 2023/01/08 11:21:10 by nriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 # if BUFFER_SIZE < 0
 #  undef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 0
 # endif
 
 # ifdef MAXFD
